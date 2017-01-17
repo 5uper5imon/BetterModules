@@ -1,8 +1,7 @@
 ﻿using System.Web;
-using BetterModules.Core.Events;
 
 // ReSharper disable CheckNamespace
-namespace BetterModules.Core.Web.Events
+namespace BetterModules.Events
 // ReSharper restore CheckNamespace
 {
     public class WebCoreEvents : EventsBase<WebCoreEvents>
@@ -10,6 +9,7 @@ namespace BetterModules.Core.Web.Events
         /// <summary>
         /// Occurs when a host starts.
         /// </summary>
+
         public event DefaultEventHandler<SingleItemEventArgs<HttpApplication>> HostStart;
 
         public event DefaultEventHandler<SingleItemEventArgs<HttpApplication>> HostStop;

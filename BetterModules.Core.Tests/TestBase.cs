@@ -1,4 +1,7 @@
-﻿using BetterModules.Core.Tests.TestHelpers;
+﻿using Autofac;
+using BetterModules.Core.Dependencies;
+using BetterModules.Core.Tests.TestHelpers;
+using NUnit.Framework;
 
 namespace BetterModules.Core.Tests
 {
@@ -7,6 +10,20 @@ namespace BetterModules.Core.Tests
         private RandomTestDataProvider testDataProvider;
 
         private static bool started;
+
+        private ILifetimeScope container;
+
+        protected ILifetimeScope Container
+        {
+            get
+            {
+                if (container == null)
+                {
+                    container = ContextScopeProvider.CreateChildContainer();
+                }
+                return container;
+            }
+        }
 
         protected TestBase()
         {
@@ -18,7 +35,7 @@ namespace BetterModules.Core.Tests
             }
         }
 
-        public RandomTestDataProvider TestDataProvider
+        public virtual RandomTestDataProvider TestDataProvider
         {
             get
             {
@@ -27,6 +44,20 @@ namespace BetterModules.Core.Tests
                     testDataProvider = new RandomTestDataProvider();
                 }
                 return testDataProvider;
+            }
+        }
+
+        [TestFixtureTearDown]
+        public void Down()
+        {
+            OnTestFixtureDown();
+        }
+
+        protected virtual void OnTestFixtureDown()
+        {
+            if (Container != null)
+            {
+                container.Dispose();
             }
         }
     }
